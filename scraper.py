@@ -34,3 +34,11 @@ def get_secondary_runes(soup):
             secondary_runes.append(rune_name)
     return secondary_runes
 
+# Testen auf Fehler
+def check_for_errors(soup):
+    error_message = soup.find("div", class_="error-404 content-side-padding")
+    if error_message:
+        return True
+    else:
+        return False
+
