@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from scraper import get_champion_data, get_primary_runes, get_secondary_runes, get_stat_shards
+from scraper import get_champion_data, get_primary_runes, get_secondary_runes
 import json
 
 # Token laden
@@ -24,20 +24,20 @@ async def runes(ctx, champion: str):
         # Runen-Daten extrahieren
         primary = get_primary_runes(soup)
         secondary = get_secondary_runes(soup)
-        shards = get_stat_shards(soup)
 
-        # Nachricht erstellen
-        message = (
-            f"**Runen für {champion.capitalize()}:**\n\n"
-            f"**Primäre Runen:**\n" + ", ".join(primary) + "\n\n"
-            f"**Sekundäre Runen:**\n" + ", ".join(secondary) + "\n\n"
-            f"**Stat-Shards:**\n" + ", ".join(shards)
-        )
+        # Sende die Bilder der primären Runen
+        await ctx.send("Primäre Runen:")
+        for rune in primary:
+            await ctx.send(rune)  # Bild-URL direkt senden
+
+        # Sende die Bilder der sekundären Runen
+        await ctx.send("Sekundäre Runen:")
+        for rune in secondary:
+            await ctx.send(rune)  # Bild-URL direkt senden
+
     else:
         # Fehlermeldung, falls Champion nicht gefunden wird
-        message = f"Entschuldigung, keine Daten für {champion} gefunden. Überprüfe den Namen!"
-
-    await ctx.send(message)
+        await ctx.send(f"Entschuldigung, keine Daten für {champion} gefunden. Überprüfe den Namen!")
 
 # Bot starten
 bot.run(config["token"])
