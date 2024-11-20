@@ -21,8 +21,6 @@ def get_primary_runes(soup):
     if primary_tree:
         for active_perk in primary_tree.find_all("div", class_=["perk perk-active", "perk keystone perk-active"]):
             rune_name = active_perk.find("img")["src"]
-            #rune_name = rune_name.replace("The Keystone", "").strip()
-            #rune_name = rune_name.replace("The Rune", "").strip()
             primary_runes.append(rune_name)
     return primary_runes
 
@@ -33,7 +31,6 @@ def get_secondary_runes(soup):
     if secondary_tree:
         for active_perk in secondary_tree.find_all("div", class_="perk perk-active"):
             rune_name = active_perk.find("img")["src"]
-            #rune_name = rune_name.replace("The Rune", "").strip()
             secondary_runes.append(rune_name)
     return secondary_runes
 
