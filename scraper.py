@@ -6,8 +6,16 @@ headers = {
 }
 
 # Funktion, um die HTML-Daten für einen Champion zu laden
-def get_champion_data(champion_name):
+def get_champion_runes(champion_name):
     url = f"https://u.gg/lol/champions/{champion_name}/build"
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        return BeautifulSoup(response.content, "html.parser")
+    else:
+        return None
+
+def get_champion_build(champion_name):
+    url = f"https://mid.gg/champion/{champion_name}"
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
         return BeautifulSoup(response.content, "html.parser")
@@ -34,6 +42,17 @@ def get_secondary_runes(soup):
             secondary_runes.append(rune_name)
     return secondary_runes
 
+# Champion-Build
+def get_build(soup):
+    build = []
+    items = soup.find("div", class_="item-container")
+    if items:
+        for item in items.find_all("div", class_="ng-star-inserted"):
+            item_name = item.find("img")["src"]
+            build.append(item_name)
+
+    return build
+
 # Testen auf Fehler
 def check_for_errors(soup):
     error_message = soup.find("div", class_="error-404 content-side-padding")
@@ -41,4 +60,3 @@ def check_for_errors(soup):
         return True
     else:
         return False
-
